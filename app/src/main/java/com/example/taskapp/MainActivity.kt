@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recycler: RecyclerView
+    private var auxiliarForTask = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         val tasks = TaskManager.getTasks()
         initComponent(tasks)
+        btnSetOnClickListener()
 
     }
 
@@ -29,4 +31,22 @@ class MainActivity : AppCompatActivity() {
         recycler.adapter = TaskAdapter(tasks)
         recycler.layoutManager = LinearLayoutManager(this)
     }
+
+    fun btnSetOnClickListener(){
+        binding.btnAddTask.setOnClickListener{
+            val task = generateTask()
+            TaskManager.addTask(task)
+            recycler.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    private fun generateTask(): Task {
+        auxiliarForTask += 1
+        return Task(
+            auxiliarForTask,
+            "Título default",
+            "Descripción default"
+        )
+    }
+
 }
